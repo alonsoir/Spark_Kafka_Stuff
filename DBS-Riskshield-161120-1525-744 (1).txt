@@ -1,0 +1,35 @@
+Riskshield
+Introducción Fases del proyecto Primera fase: Fase pasiva Segunda fase: Fase activa Operativas  Estáticos Dinámicos Info adicional Información técnica
+
+Introducción
+Riskshield es una herramienta que va a sustituir al motor de fraude.
+
+Fases del proyecto
+Primera fase: Fase pasiva
+La herramienta trabajará en modo "pasivo", recibiendo datos y emitiendo las correspondientes alertas que serán consultadas por el equipo de fraude en offline. En esta primera fase, no se incluye la llamada al nuevo motor en las operativas.
+
+Desarrollos de nuestro Squad, primera fase: Los desarrollos que el Squad realizará en esta fase es el envío de datos a la herramienta, de la siguiente manera:
+
+Carga inicial de datos estáticos (datos del cliente, productos del cliente) y reconciliaciones: Extracción de datos de FOS y Profile para generar ficheros csv y envío a través del protocolo xfb. Notificación de modificación en determinados datos estáticos (cambio de teléfono, por ej) a través de eventos. Envío de datos dinámicos (transacciones tales como transferencias) a través de eventos.
+
+Segunda fase: Fase activa
+Sustituir el actual motor de riesgo por el nuevo.
+
+Operativas 
+Estáticos
+Productos Daily Banking Lending Investments Savings Investments Broker Cards MVP 1 1 1 1 PL? Nº productos
+
+Dinámicos
+ÁREA Transferencias Operativas - detalle Transferencia Transferencia TPP Transferencia a tarjeta de crédito Bizum Bizum (envio y aceptacion) Bizum (*alta/baja/portabilidad) ATM Cards Retirada cajero Operativas Tarjetas Pagar e-commerce Google Pay Pagar e-commerce Apple Pay Compras con tarjeta en CES Enrolment Apple Pay Enrolment Google Pay Miscelanea Cuenta nómina (devolución de recibos) Cuenta nómina (alta de interviniente) Cuenta nómina (contratación) Desactivación de notificaciones cuentas y tarjetas 2 PL 2 3 3 3 After Go Live After Go Live After Go Live After Go Live After Go Live After Go Live PL PL PL PL MVP nº Operativa 10 3 1 2 3 1 6 1 1 1 1 1 1 1 1 2
+
+Nota: PL es Parking Lot
+
+Info adicional
+Enlace de confluence con la propuesta de arquitectura -> https://confluence.europe.intranet/display/ESA/Riskshield RiskShield ESA Enlace negocio proyecto RiskShield:   https://confluence.europe.intranet/pages/viewpage.action?spaceKey=CDH&title=Anti-fraud+service   Meeting minutes & materials
+
+Información técnica
+DBT - Comunidad de prácticas: https://web.microsoftstream.com/channel/470d4f8b-8bfb-40b6-b3f9-3c0cb01731d0 Configurar IPC + Pipeline Despliegue  Event Load Oracle events from files   EventBus Documentation (version 0.8.5 latest): https://theforge.ing.net/product/16107/documentation/latest/index EventBus. Keep track of what's happening using real-time data feeds: https://academy.ing.net/channel/eventbus Merak 01.- Onboarding proccess for new Microservices (F2E & Merak)  Kafka and Merak Connection Profile5 in merak How to connect merak with fos Configuración de Cassandra en Merak How-To Upload Merak to PRE/PRO Certificados en Merak Excepciones con Merak y Jersey Deploy Merak using Docker Build and Release your Merak Application in Azure - One Pipeline: https://academy.ing.net/learn/one-pipeline-1 Get started wit a new Merak application: https://academy.ing.net/learn/api-sdk/academy/merak-application/README#1 Merak (version 15.0.0 latest): https://theforge.ing.net/product/12051/documentation/15.0.0/merak/merak Ejemplo documentación para Merak: ESAccount Documentation Ejemplo documentación onboarding Merak: Onboarding Form (Bizum) API
+
+ApI SDK. Cookbook https://theforge.ing.net/product/12051/documentation/latest/cookbook/cookbook KAFKA. Charla sobre los principios básicos de kakfa: https://www.youtube.com/watch?v=vrnU-KVYbSo&feature=youtu.be Kafka-Principios Basicos.pptx (ppt de la charla) Primeros pasos con eventos Kafka (desde la instalación en local y ejemplo de code) Pasos realizar:  1. Decidir tipo de evento a publicar: DiM_00 - New Global Event Taxonomy 2. Solicitar topic en touchpoint  https://touchpoint.ing.net/stream-marketplace/marketplace (7.1 Kafka: Request Kafka topic)?? 3. Dar de alta el schema en el catálogo de eventos (repositorio en git donde se encuentra el catálogo y existen herramientas que serializan / deserializan esta info). a. Catálogo eventos Holanda: https://gitlab.ing.net/EventDataGovernance/avro-schema-catalog catalog (https://gitlab. ing.net/ES-Databus/databus-avro-entities/blob/development/README.md ¿?) 4. Desarrollar productor/consumidor:  How to build Event Bus (IPC) Consumer/producer on Merak 7.0 ONBOARDING TO KAFKA Ejemplo de otros squad con eventos kafka: Primeros pasos con eventos Kafka
+
+
