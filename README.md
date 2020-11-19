@@ -1,10 +1,14 @@
-## Proyecto RiskShield.
+# Proyecto RiskShield.
 
 	/Users/aironman/gitProjects/sopra/RiskShield
 
 	Básicamente es un motor de fraudes
 
-#  Conceptos básicos sobre Kafka. https://youtu.be/vrnU-KVYbSo
+##  Conceptos básicos sobre Kafka. 
+
+	Video chulo de Oscar:
+	
+		https://youtu.be/vrnU-KVYbSo
 
 	KSQLDB habla del concepto de tabla en kafka, a la que puedes acceder operando a la manera SQL, pero más que una tabla, es un snapshot sobre un topic, es decir, es como sacarle una foto a ese topic, y puedes acceder a esos datos a la manera SQL. 
 
@@ -25,17 +29,17 @@
 	Hay alguna solución basada en usar consumidores con listas stash? 
 	https://medium.com/datadriveninvestor/if-youre-using-kafka-with-your-microservices-you-re-probably-handling-retries-wrong-8492890899fa
 
-# Schema registry
+## Schema registry
 
 	Una vez que tienes levantada la plataforma, puedes ir a control-center
 
 	http://localhost:9021/clusters/EIjI4rm5T_i_pC_4_r5u4Q/management/topics/transactions/message-viewer
 
-# Tutorial Schema registry y un poco de avro
+## Tutorial Schema registry y un poco de avro
 
 	https://docs.confluent.io/current/schema-registry/schema_registry_onprem_tutorial.html#schema-registry-onprem-tutorial
 
-# ejemplo esquema avro
+## ejemplo esquema avro
 	cat src/main/resources/avro/io/confluent/examples/clients/basicavro/Payment.avsc
 
 	{
@@ -52,7 +56,7 @@
 
 	https://docs.confluent.io/current/streams/developer-guide/datatypes.html#avro
 
-# ejemplo cliente Kafka AVRO! Producer, consumer...
+## ejemplo cliente Kafka AVRO! Producer, consumer...
 
 	/Users/aironman/gitProjects/examples/clients/avro
 
@@ -68,7 +72,7 @@
 	producer.send(record);
 	...
 
-# Probablemente tengas que editar o crear esto. localhost es lo mismo que 0.0.0.0
+## Probablemente tengas que editar o crear esto. localhost es lo mismo que 0.0.0.0
 
 	cat $HOME/.confluent/java.config
 
@@ -76,29 +80,29 @@
 	schema.registry.url=http://localhost:8081
 
 
-# Avro Producer full example
+## Avro Producer full example
 	https://github.com/confluentinc/examples/blob/6.0.0-post/clients/avro/src/main/java/io/confluent/examples/clients/basicavro/ProducerExample.java
 
 	mvn exec:java -Dexec.mainClass=io.confluent.examples.clients.basicavro.ProducerExample -Dexec.args="$HOME/.confluent/java.config"
 
-# Avro Consumer full example. Ojo, no te vale levantar el típico consumidor kafka para poder "ver" los mensajes. Necesitas algo así. 
+## Avro Consumer full example. Ojo, no te vale levantar el típico consumidor kafka para poder "ver" los mensajes. Necesitas algo así. 
 	https://github.com/confluentinc/examples/blob/6.0.0-post/clients/avro/src/main/java/io/confluent/examples/clients/basicavro/ConsumerExample.java
 
 	mvn exec:java -Dexec.mainClass=io.confluent.examples.clients.basicavro.ConsumerExample -Dexec.args="$HOME/.confluent/java.config"
 
-# Podemos interactuar con control-center para ver el esquema aplicado. Por ejemplo, para el topic "transactions"
+## Podemos interactuar con control-center para ver el esquema aplicado. Por ejemplo, para el topic "transactions"
 
 	http://localhost:9021/clusters/EIjI4rm5T_i_pC_4_r5u4Q/management/topics/transactions/schema/value
 
-# Tambien podemos usar curl
+## Tambien podemos usar curl
 
 	curl --silent -X GET http://localhost:8081/subjects/ | jq .
 
-# con más detalle, recomendado
+## con más detalle, recomendado
 
 	curl --silent -X GET http://localhost:8081/subjects/transactions-value/versions/latest | jq .
 
-# dado su id, si lo sabes
+## dado su id, si lo sabes
 
 	curl --silent -X GET http://localhost:8081/schemas/ids/1 | jq .
 
