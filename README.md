@@ -2,7 +2,10 @@
 
 	/Users/aironman/gitProjects/sopra/RiskShield
 
-	Básicamente es un motor de fraudes
+	Básicamente es un motor de fraudes, hay que reescribir uno existente usando tecnología big data.
+
+	Probablemente los libros de Jacek son la mejor ayuda.
+	https://jaceklaskowski.gitbooks.io/mastering-spark-sql/content/spark-sql.html
 
 ##  Conceptos básicos sobre Kafka. 
 
@@ -320,3 +323,5 @@
 	// row.getValuesMap[T] retrieves multiple columns at once into a Map[String, T]
 	teenagersDF.map(teenager => teenager.getValuesMap[Any](List("name", "age"))).collect()
 	// Array(Map("name" -> "Justin", "age" -> 19))
+
+
