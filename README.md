@@ -325,14 +325,17 @@
 	// Array(Map("name" -> "Justin", "age" -> 19))
 
 	26/11/2020
-	
+
 	Vamos a suponer que la demo para el proyecto RiskShield implica hacer una carga de datos en una bd MariaDB usando sparkSQL.
 
-	Primero, necesito el driver jdbc de MariaDB en el classpath de spark.
-	/Users/aironman/.m2/repository/org/mariadb/jdbc/mariadb-java-client/2.4.4
+# Primero 
+
+necesito el driver jdbc de MariaDB en el classpath de spark. En mi caso, lo tengo en:
+	
+		/Users/aironman/.m2/repository/org/mariadb/jdbc/mariadb-java-client/2.4.4
 
 
-	Segundo, necesito tener levantado el servidor:
+# Segundo, necesito tener levantado el servidor:
 
 		# start MariaDB Server
 		mysql.server start
@@ -351,11 +354,43 @@
 
 		#password is set as root
 	
-	Tercero, arranco la spark-shell. --packages descargará el jar de maven central. --driver-class-path es necesario para que no de una excepción a la hora de cargar una tabla en un Dataframe.
+	Tengo una base de datos llamada commands, que contiene una tabla user_data:
 
-		 spark-shell --driver-class-path org.mariadb.jdbc:mariadb-java-client:2.4.4 --packages org.mariadb.jdbc:mariadb-java-client:2.4.4
+		MariaDB [commands]> show databases;
+		+--------------------+
+		| Database           |
+		+--------------------+
+		| arqu_local         |
+		| commands           |
+		| information_schema |
+		| javistepa_banking  |
+		| mysql              |
+		| performance_schema |
+		| queries            |
+		| sys                |
+		+--------------------+
+		8 rows in set (0.003 sec)
 
-	Si todo ha ido bien, comprobamos que tenemos el jar cargado:
+		MariaDB [commands]> desc user_data;
+		+---------------+---------+------+-----+---------+-------+
+		| Field         | Type    | Null | Key | Default | Extra |
+		+---------------+---------+------+-----+---------+-------+
+		| ID_USER_DATA  | int(11) | YES  |     | NULL    |       |
+		| NAME          | text    | YES  |     | NULL    |       |
+		| DATE_REGISTER | text    | YES  |     | NULL    |       |
+		+---------------+---------+------+-----+---------+-------+
+		3 rows in set (0.002 sec)
+
+
+# Tercero
+
+arranco la spark-shell. --packages descargará el jar de maven central. --driver-class-path es necesario para que no de una excepción a la hora de cargar una tabla en un Dataframe.
+
+	spark-shell --driver-class-path org.mariadb.jdbc:mariadb-java-client:2.4.4 --packages org.mariadb.jdbc:mariadb-java-client:2.4.4
+	
+En mi caso, estoy trabajando con Spark 3.0.1 y MariaDB 10.5.8-MariaDB Homebrew
+
+Si todo ha ido bien, comprobamos que tenemos el jar cargado:
 
 		Class.forName("org.mariadb.jdbc.Driver")
 
@@ -412,21 +447,16 @@
 		2 rows in set (0.000 sec)
 
 
-		// ojito, el esquema de la base de datos está así. Te ha pasado que después de ejecutar la sentencia anterior, me he cargado la PK y el autoincremental:
-		MariaDB [commands]> desc user_data;
-		+---------------+---------+------+-----+---------+-------+
-		| Field         | Type    | Null | Key | Default | Extra |
-		+---------------+---------+------+-----+---------+-------+
-		| ID_USER_DATA  | int(11) | YES  |     | NULL    |       |
-		| NAME          | text    | YES  |     | NULL    |       |
-		| DATE_REGISTER | text    | YES  |     | NULL    |       |
-		+---------------+---------+------+-----+---------+-------+
-
 		// Guardamos los datos en una tabla de Spark
 		dfUsers.write.mode("overwrite").saveAsTable("USER_DATA")
 		val recover_dfUsers = spark.read.table("USER_DATA")
 		recover_dfUsers.show()
+		+------------+------+-------------+
+		|ID_USER_DATA|  NAME|DATE_REGISTER|
+		+------------+------+-------------+
+		|           1|ALONSO|   26-11-2020|
+		|           2|  PAPA|   26-11-2020|
+		+------------+------+-------------+
 
-
-	https://docs.databricks.com/data/data-sources/sql-databases.html#step-1-check-that-the-jdbc-driver-is-available
+https://docs.databricks.com/data/data-sources/sql-databases.html#step-1-check-that-the-jdbc-driver-is-available
 
