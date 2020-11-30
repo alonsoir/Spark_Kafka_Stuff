@@ -434,6 +434,7 @@ Si todo ha ido bien, comprobamos que tenemos el jar cargado:
 						.option("password", jdbcPassword)
 						//.saveAsTable("USERS")
 						.save()
+
 		// Bien usas saveAsTable para guardar el resultado en una tabla de spark que he llamado USERS, bien usas save() para guardar los datos en la tabla de MariaDB.
 		// Las dos no puedes a la vez.
 		// Después de ejecutar la anterior sentencia, en la base de datos podemos ver estos datos.
@@ -459,4 +460,62 @@ Si todo ha ido bien, comprobamos que tenemos el jar cargado:
 		+------------+------+-------------+
 
 https://docs.databricks.com/data/data-sources/sql-databases.html#step-1-check-that-the-jdbc-driver-is-available
+
+# Uniendo Spark, kafka y MariaDB.
+
+Necesitas esta dependencia como mínimo si vas a trabajar con maven.
+	
+	groupId = org.apache.spark
+	artifactId = spark-sql-kafka-0-10_2.12
+	version = 3.0.1
+
+Lanzo la spark-shell
+
+	spark-shell --driver-class-path org.mariadb.jdbc:mariadb-java-client:2.4.4 --packages org.mariadb.jdbc:mariadb-java-client:2.4.4,org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.1
+
+Comprobamos si tenemos un topic con el que trabajar
+
+	docker-compose exec broker kafka-topics --list --bootstrap-server 0.0.0.0:9092
+
+Si no tenemos ninguno, habrá que crearlo, se llamará transactions
+
+	docker-compose exec broker kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic transactions
+
+// producimos unos cuantos mensajes el topic transactions...
+
+	docker-compose exec broker kafka-console-producer --topic transactions --bootstrap-server 0.0.0.0:9092
+
+// algo de codigo para la spark-shell
+// Ojito, que si pones el comando en varias líneas, spark-shell va a asignar una variable a cada una de las líneas. Algo absurdo.
+// Creating a Kafka Sink for Streaming Queries
+// Write key-value data from a DataFrame to a specific Kafka topic specified in an option
+import org.apache.spark.sql.streaming.Trigger
+
+val df = spark.readStream.format("kafka").option("kafka.bootstrap.servers", "localhost:9092").option("subscribe", "transactions").load()
+
+df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)").as[(String, String)]
+
+df.printSchema
+
+// escribimos en la consola , previo casting de binario a UTF8 para que podamos verlos bien...
+val messages = df.selectExpr("cast (value as string) AS Content")
+
+messages.writeStream.outputMode(“append”).format(“console”).option(“truncate”, false).option("checkpointLocation", "/tmp").trigger(Trigger.ProcessingTime("1 second")).start().awaitTermination()
+
+TROUBLESHOOTING
+
+	1) Al lanzar la spark-shell, ojito, que no puede haber espacios en el packages, separados por comas.
+
+	2) Al lanzar el comando para subscribirte al topic kafka y tenerlo en un dataframe, si pones el comando en varias líneas, spark-shell va a asignar una variable a cada una de las líneas. Algo absurdo.
+
+		val df = spark.readStream.format("kafka").option("kafka.bootstrap.servers", "localhost:9092").option("subscribe", "transactions").load()
+
+	3) 
+ 
+
+	org.apache.spark.sql.AnalysisException: checkpointLocation must be specified either through option("checkpointLocation", ...) or SparkSession.conf.set("spark.sql.streaming.checkpointLocation", ...);
+
+https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html
+
+https://spark.apache.org/docs/latest/submitting-applications.html
 
