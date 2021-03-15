@@ -1,8 +1,4 @@
-# Proyecto RiskShield.
-
-	/Users/aironman/gitProjects/sopra/RiskShield
-
-	Básicamente es un motor de fraudes, hay que reescribir uno existente usando tecnología big data.
+# Proyecto motor de fraudes, preparación
 
 	Probablemente los libros de Jacek son la mejor ayuda.
 	https://jaceklaskowski.gitbooks.io/mastering-spark-sql/content/spark-sql.html
@@ -326,7 +322,7 @@
 
 	26/11/2020
 
-	Vamos a suponer que la demo para el proyecto RiskShield implica hacer una carga de datos en una bd MariaDB usando sparkSQL.
+	Vamos a suponer que la demo para el proyecto implica hacer una carga de datos en una bd MariaDB usando sparkSQL.
 
 # Primero 
 
