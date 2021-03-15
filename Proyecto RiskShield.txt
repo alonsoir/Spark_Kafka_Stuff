@@ -1,38 +1,3 @@
-## Proyecto RiskShield.
-
-	/Users/aironman/gitProjects/sopra/RiskShield
-
-	Básicamente es un motor de fraudes. Va a tener una fase inicial en la que va a ser necesaria una carga masiva de datos en sus bases de datos. 
-	Se preveé que será necesario usar spark para hacer esa carga de datos. SparkSQL? qué base de datos? cómo lo voy a hacer? 
-
-	El equipo de desarrollo de SOPRA:
-
-		ISIDORO ROMAN Alonso 
-		MARCOS GARCÍA Julio
-		ALBIACH RODRIGO Alvaro
-		MORERA ORCHILLES Vicente
-
-	Delivery SOPRA
-
-		Jose Luis Ruiz González
-		Javier Martinez Gusano
-
-	Por parte de ING:
-
-		Ingenieros
-			
-			Jefe de Oscar Gómez Soriano. POR DEFINIR su nombre
-			Oscar Gómez Soriano.
-		
-		Feature Chapter Lead
-
-			Virginia,
-
-		Product Owner
-
-			?
-	Nos tienen que convocar, mi equipo tiene que recibir el portatil de ING, lo tienen que configurar.
-
 ##  Conceptos básicos sobre Kafka. https://youtu.be/vrnU-KVYbSo
 
 	KSQLDB habla del concepto de tabla en kafka, a la que puedes acceder operando a la manera SQL, pero más que una tabla, es un snapshot sobre un topic, es decir, es como sacarle una foto a ese topic, y puedes acceder a esos datos a la manera SQL. 
